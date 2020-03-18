@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Jackal\Downloader;
+namespace Jackal\Downloader\Downloader;
 
 
 interface DownloaderInterface
