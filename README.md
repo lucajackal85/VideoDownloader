@@ -1,3 +1,5 @@
+## Disclaimer: this library is in Alpha - not tester. Use it at your own risk!
+
 # Video Downloader
 Minimal example
 ```
