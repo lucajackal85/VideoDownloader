@@ -1,28 +1,40 @@
 <?php
 
-
 namespace Jackal\Downloader\Downloader;
 
+use Jackal\Downloader\Exception\DownloadException;
+use Jackal\Downloader\Utils\DownloaderUtil;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class YoutubeDownloader implements DownloaderInterface {
+    /** @var array $options */
+    protected $options;
+    /** @var string $youtubeVideoURL */
+    protected $youtubeVideoURL;
 
-    protected $youtubeVideo = null;
-    protected $format = null;
+    protected $tempFilePathName;
 
-    public function __construct($youtubeVideo,$format = null)
+    public function __construct($id, $config = [])
     {
-        $this->format = $format;
-        $this->youtubeVideo = $youtubeVideo;
+        $options = new OptionsResolver();
+        $options->setDefaults([
+            'force' => true,
+            'youtube_id' => $id,
+            'format' => null,
+        ]);
+
+        $options->setRequired('youtube_id');
+        $this->options = $options->resolve($config);
     }
 
-    public function getURL(){
+    public function getURL() : string {
 
-        if(!filter_var($this->youtubeVideo,FILTER_VALIDATE_URL)){
-            $this->youtubeVideo = 'https://www.youtube.com/watch?v='.$this->youtubeVideo;
+        if(!filter_var($this->getYoutubeId(), FILTER_VALIDATE_URL)){
+            $this->youtubeVideoURL = 'https://www.youtube.com/watch?v=' . $this->getYoutubeId();
         }
 
         $yt = new \YouTube\YouTubeDownloader();
-        $links = $yt->getDownloadLinks($this->youtubeVideo);
+        $links = $yt->getDownloadLinks($this->youtubeVideoURL);
 
         $videos = array_values($links);
 
@@ -30,33 +42,60 @@ class YoutubeDownloader implements DownloaderInterface {
 
         foreach ($videos as $video){
             if(isset($video['format'])) {
-                preg_match('/([0-9]{2,4})p/', $video['format'],$match);
+                preg_match('/([0-9]{2,4})p/', $video['format'], $match);
                 if(isset($match[1])){
                     $formatVideos[$match[1]] = $video['url'];
                 }
             }
         }
 
-        ksort($formatVideos,SORT_NUMERIC);
+        ksort($formatVideos, SORT_NUMERIC);
 
-        if($this->format and !isset($formatVideos[$this->format])){
-            throw new \Exception(sprintf('Format %s is not available. Possible formats are %s',$this->format,implode(', ',array_keys($formatVideos))));
+        if($this->getFormat() and !isset($formatVideos[$this->getFormat()])){
+            throw new \Exception(
+                sprintf('Format %s is not available. Possible formats are %s',
+                    $this->getFormat(), implode(', ', array_keys($formatVideos))
+                )
+            );
         }
-        return $this->format ? $formatVideos[$this->format] : end($formatVideos);
+
+        return $this->getFormat() ? $formatVideos[$this->getFormat()] : end($formatVideos);
     }
 
-    public function download($destinationFile){
+    public function download($destinationFile) : void {
         if(!is_dir(dirname($destinationFile))){
-            if(!mkdir(dirname($destinationFile),0777,true)){
-                throw new \Exception('Unable to create directory '.dirname($destinationFile));
+            if(!mkdir(dirname($destinationFile), 0777, true)){
+                throw new \Exception('Unable to create directory ' . dirname($destinationFile));
             }
         }
 
-        $tempFile = $destinationFile.'.temp';
-        if(!is_file($tempFile)) {
-            file_put_contents($tempFile, (new \DateTime('now'))->format('Y-m-d H:i:s'));
-            file_put_contents($destinationFile, file_get_contents($this->getURL()));
-            unlink($tempFile);
+        $this->tempFilePathName = $destinationFile . '.temp';
+
+        if(file_exists($this->tempFilePathName) and !$this->getForce()){
+            throw DownloadException::tempFileAlreadyExists($this->tempFilePathName);
         }
+
+        DownloaderUtil::downloadURL($this->getURL(), $this->tempFilePathName);
+        rename($this->tempFilePathName, $destinationFile);
+
+    }
+
+    public function __destruct()
+    {
+        if(is_file($this->tempFilePathName)){
+            unlink($this->tempFilePathName);
+        }
+    }
+
+    protected function getYoutubeId() : string {
+        return $this->options['youtube_id'];
+    }
+
+    protected function getForce(){
+        return $this->options['force'];
+    }
+
+    protected function getFormat() : string {
+        return $this->options['format'];
     }
 }
