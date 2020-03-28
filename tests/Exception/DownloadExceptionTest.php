@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Jackal\Downloader\Tests\Exception;
-
 
 use Jackal\Downloader\Exception\DownloadException;
 use PHPUnit\Framework\TestCase;
