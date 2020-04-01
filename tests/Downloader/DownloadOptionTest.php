@@ -1,23 +1,18 @@
 <?php
 
-
 namespace Jackal\Downloader\Tests\Downloader;
 
-
-use Jackal\Downloader\Downloader\AbstractDownloader;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class DownloadOptionTest extends AbstractDownloadTest
 {
-
     public function testDownloaderWithDefaultOptions(){
 
         $this->assertEquals([
             'video_id' => 123,
             'overwrite' => false,
-            'force' => false
-        ],$this->getTestLocalDownloader(123,[])->getOptions());
+            'force' => false,
+        ], $this->getTestLocalDownloader(123, [])->getOptions());
     }
 
     public function testDownloaderWithCustomOptions(){
@@ -25,8 +20,8 @@ class DownloadOptionTest extends AbstractDownloadTest
             'video_id' => 123,
             'overwrite' => false,
             'force' => false,
-            'custom_option' => 'this is the custom option'
-        ],$this->getTestLocalDownloader(123,['custom_option' => 'this is the custom option'])->getOptions());
+            'custom_option' => 'this is the custom option',
+        ], $this->getTestLocalDownloader(123, ['custom_option' => 'this is the custom option'])->getOptions());
     }
 
     public function testRaiseExceptionOnMissingId(){
@@ -37,6 +32,6 @@ class DownloadOptionTest extends AbstractDownloadTest
         $this->assertEquals([
             'overwrite' => false,
             'force' => false,
-        ],$this->getTestLocalDownloader(null,[])->getOptions());
+        ], $this->getTestLocalDownloader(null, [])->getOptions());
     }
 }

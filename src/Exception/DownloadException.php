@@ -13,7 +13,7 @@ class DownloadException extends \Exception
     }
 
     public static function destinationFileAlreadyExists($destinationFile){
-        return new DownloadException(sprintf('Output file "%s" already exists. Use option `overwrite` to force',$destinationFile));
+        return new DownloadException(sprintf('Output file "%s" already exists. Use option `overwrite` to force', $destinationFile));
     }
 
     public static function cannotCreateDirectory($folder){

@@ -26,10 +26,10 @@ abstract class AbstractDownloader implements DownloaderInterface
     public function __construct($id, $config = [])
     {
         $options = new OptionsResolver();
-        $options->setDefaults(array_merge($config,[
+        $options->setDefaults(array_merge($config, [
             'force' => false,
             'video_id' => $id,
-            'overwrite' => false
+            'overwrite' => false,
         ]));
 
         $options->setAllowedTypes('force', 'bool');
@@ -69,9 +69,10 @@ abstract class AbstractDownloader implements DownloaderInterface
 
     /**
      * @param $destinationFile
+     * @param callable|null $callback
      * @throws DownloadException
      */
-    public function download($destinationFile) : void {
+    public function download($destinationFile, callable $callback = null) : void {
 
         if(file_exists($destinationFile) and !$this->forceOverwriteFile()){
             throw DownloadException::destinationFileAlreadyExists($destinationFile);
@@ -89,7 +90,7 @@ abstract class AbstractDownloader implements DownloaderInterface
             throw DownloadException::tempFileAlreadyExists($this->tempFilePathName);
         }
 
-        DownloaderUtil::downloadURL($this->getURL(), $this->tempFilePathName);
+        DownloaderUtil::downloadURL($this->getURL(), $this->tempFilePathName, $callback);
         rename($this->tempFilePathName, $destinationFile);
 
     }
