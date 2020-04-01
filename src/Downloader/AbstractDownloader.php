@@ -34,7 +34,7 @@ abstract class AbstractDownloader implements DownloaderInterface
 
         $options->setAllowedTypes('force', 'bool');
         $options->setAllowedTypes('overwrite', 'bool');
-        $options->setAllowedTypes('video_id', 'string');
+        $options->setAllowedTypes('video_id', ['string','integer']);
         $this->options = $options->resolve($config);
     }
 
@@ -74,12 +74,12 @@ abstract class AbstractDownloader implements DownloaderInterface
     public function download($destinationFile) : void {
 
         if(file_exists($destinationFile) and !$this->forceOverwriteFile()){
-            throw new \Exception(sprintf('Output file "%s" already exists. Use option `overwrite` to force',$destinationFile));
+            throw DownloadException::destinationFileAlreadyExists($destinationFile);
         }
 
         if(!is_dir(dirname($destinationFile))){
             if(!mkdir(dirname($destinationFile), 0777, true)){
-                throw new \Exception('Unable to create directory ' . dirname($destinationFile));
+                throw DownloadException::cannotCreateDirectory(dirname($destinationFile));
             }
         }
 
