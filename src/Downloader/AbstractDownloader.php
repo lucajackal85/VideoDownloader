@@ -20,10 +20,10 @@ abstract class AbstractDownloader implements DownloaderInterface
 
     /**
      * AbstractDownloader constructor.
-     * @param $id
+     * @param string $id
      * @param array $config
      */
-    public function __construct($id, $config = [])
+    public function __construct($id, array $config = [])
     {
         $options = new OptionsResolver();
         $options->setDefaults(array_merge($config, [
@@ -39,7 +39,7 @@ abstract class AbstractDownloader implements DownloaderInterface
     }
 
     /**
-     * @return mixed
+     * @return bool
      */
     protected function forceDownload() : bool
     {
@@ -71,11 +71,11 @@ abstract class AbstractDownloader implements DownloaderInterface
     }
 
     /**
-     * @param $destinationFile
+     * @param string $destinationFile
      * @param callable|null $callback
      * @throws DownloadException
      */
-    public function download($destinationFile, callable $callback = null) : void
+    public function download(string $destinationFile, callable $callback = null) : void
     {
         if (file_exists($destinationFile) and !$this->forceOverwriteFile()) {
             throw DownloadException::destinationFileAlreadyExists($destinationFile);
