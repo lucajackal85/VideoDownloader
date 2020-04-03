@@ -6,7 +6,8 @@ use Jackal\Downloader\Exception\DownloadException;
 
 class DownloaderTest extends AbstractDownloadTest
 {
-    public function testDownloadFile(){
+    public function testDownloadFile()
+    {
         $this->removeFileIfExists(__DIR__ . '/output.txt');
         $this->getTestLocalDownloader('123', [])->download(__DIR__ . '/output.txt');
         $this->assertFileExists(__DIR__ . '/output.txt');
@@ -14,8 +15,8 @@ class DownloaderTest extends AbstractDownloadTest
         $this->removeFileIfExists(__DIR__ . '/output.txt');
     }
 
-    public function testRaiseExceptionOnOverwrite(){
-
+    public function testRaiseExceptionOnOverwrite()
+    {
         $this->expectException(DownloadException::class);
         $this->expectExceptionMessage('Output file "' . __DIR__ . '/output.txt" already exists. Use option `overwrite` to force');
 
@@ -28,7 +29,6 @@ class DownloaderTest extends AbstractDownloadTest
 
     public function testDONOTRaiseExceptionOnOverwrite()
     {
-
         $content = rand(1000000, 9999999);
         file_put_contents(__DIR__ . '/output.txt', $content);
         $this->getTestLocalDownloader('123', [

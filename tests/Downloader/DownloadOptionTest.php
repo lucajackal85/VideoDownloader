@@ -6,8 +6,8 @@ use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 
 class DownloadOptionTest extends AbstractDownloadTest
 {
-    public function testDownloaderWithDefaultOptions(){
-
+    public function testDownloaderWithDefaultOptions()
+    {
         $this->assertEquals([
             'video_id' => 123,
             'overwrite' => false,
@@ -15,7 +15,8 @@ class DownloadOptionTest extends AbstractDownloadTest
         ], $this->getTestLocalDownloader(123, [])->getOptions());
     }
 
-    public function testDownloaderWithCustomOptions(){
+    public function testDownloaderWithCustomOptions()
+    {
         $this->assertEquals([
             'video_id' => 123,
             'overwrite' => false,
@@ -24,8 +25,8 @@ class DownloadOptionTest extends AbstractDownloadTest
         ], $this->getTestLocalDownloader(123, ['custom_option' => 'this is the custom option'])->getOptions());
     }
 
-    public function testRaiseExceptionOnMissingId(){
-
+    public function testRaiseExceptionOnMissingId()
+    {
         $this->expectExceptionMessage(InvalidOptionsException::class);
         $this->expectExceptionMessage('The option "video_id" with value null is expected to be of type "string" or "integer", but is of type "NULL"');
 
