@@ -2,21 +2,34 @@
 
 namespace Jackal\Downloader\Utils;
 
+use Jackal\Downloader\Exception\DownloadException;
+
 class DownloaderUtil
 {
-    public static function downloadURL($url, $outfile, ?callable $callback = null) : void
+    /**
+     * @param string $url
+     * @param string $outfile
+     * @param callable|null $callback
+     * @throws DownloadException
+     */
+    public static function downloadURL(string $url, string $outfile, ?callable $callback = null) : void
     {
-        $rh = fopen($url, 'rb');
-        $wh = fopen($outfile, 'wb');
-        if ($rh === false || $wh === false) {
-            throw new \Exception('Error opening file');
+        if (($rh = fopen($url, 'rb')) === false) {
+            throw DownloadException::downloadError('Error opening file: ' . $url);
         }
+
+        if(($wh = fopen($outfile, 'wb')) === false){
+            throw DownloadException::downloadError('Error creating file: ' . $outfile);
+        }
+
+        $kbRead = 0;
         while (!feof($rh)) {
+            $kbRead++;
             if (fwrite($wh, fread($rh, 1024)) === false) {
-                throw new \Exception('Cannot write to file (' . $outfile . ')');
+                throw DownloadException::downloadError('Cannot write to file: ' . $outfile);
             }
             if ($callback !== null) {
-                $callback();
+                $callback($kbRead);
             }
         }
         fclose($rh);

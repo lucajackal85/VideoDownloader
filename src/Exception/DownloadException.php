@@ -4,23 +4,48 @@ namespace Jackal\Downloader\Exception;
 
 class DownloadException extends \Exception
 {
-    public static function tempFileAlreadyExists($tempFile) : DownloadException
+    /**
+     * @param string $tempFile
+     * @return DownloadException
+     */
+    public static function tempFileAlreadyExists(string $tempFile) : DownloadException
     {
         return new DownloadException(sprintf('Temp file "%s" already exists, use force to overwrite', $tempFile));
     }
 
-    public static function alreadyRegistered($name) : DownloadException
+    /**
+     * @param string $name
+     * @return DownloadException
+     */
+    public static function alreadyRegistered(string $name) : DownloadException
     {
         return new DownloadException(sprintf('Downloader with name "%s" is already registered', $name));
     }
 
-    public static function destinationFileAlreadyExists($destinationFile) : DownloadException
+    /**
+     * @param string $destinationFile
+     * @return DownloadException
+     */
+    public static function destinationFileAlreadyExists(string $destinationFile) : DownloadException
     {
         return new DownloadException(sprintf('Output file "%s" already exists. Use option `overwrite` to force', $destinationFile));
     }
 
-    public static function cannotCreateDirectory($folder) : DownloadException
+    /**
+     * @param string $folder
+     * @return DownloadException
+     */
+    public static function cannotCreateDirectory(string $folder) : DownloadException
     {
         return new DownloadException('Unable to create directory ' . $folder);
+    }
+
+    /**
+     * @param string $message
+     * @return DownloadException
+     */
+    public static function downloadError(string $message) : DownloadException
+    {
+        return new DownloadException($message);
     }
 }

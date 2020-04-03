@@ -7,9 +7,17 @@ use Jackal\Downloader\Exception\DownloadException;
 
 class VideoDownloader
 {
+    /**
+     * @var string[]
+     */
     protected $downloaders = [];
 
-    public function registerDownloader($name, $downloaderClass) : void
+    /**
+     * @param string $name
+     * @param string|object $downloaderClass
+     * @throws DownloadException
+     */
+    public function registerDownloader(string $name, $downloaderClass) : void
     {
         if (is_object($downloaderClass)) {
             $downloaderClass = get_class($downloaderClass);
@@ -21,22 +29,25 @@ class VideoDownloader
         $this->downloaders[$name] = $downloaderClass;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRegisteredDownloaders() : array
     {
         return $this->downloaders;
     }
 
     /**
-     * @param $nameOrNamespace
-     * @param $id
-     * @param array $config
+     * @param string $nameOrNamespace
+     * @param string $id
+     * @param string[] $config
      * @return DownloaderInterface
-     * @throws \Exception
+     * @throws DownloadException
      */
-    public function getDownloader($nameOrNamespace, $id, $config = []) : DownloaderInterface
+    public function getDownloader(string $nameOrNamespace, $id, array $config = []) : DownloaderInterface
     {
         if (!array_key_exists($nameOrNamespace, $this->downloaders)) {
-            throw new \Exception('Invalid video_type or namespace [' . $nameOrNamespace . ']');
+            throw new DownloadException('Invalid video_type or namespace [' . $nameOrNamespace . ']');
         }
 
         return new $this->downloaders[$nameOrNamespace]($id, $config);
