@@ -9,5 +9,4 @@ interface DownloaderInterface
     public function getURL() : string;
     public function download($destinationFile, callable $callback = null) : void;
     public function getOptions() : array;
-
 }

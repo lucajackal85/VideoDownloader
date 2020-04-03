@@ -41,14 +41,16 @@ abstract class AbstractDownloader implements DownloaderInterface
     /**
      * @return mixed
      */
-    protected function forceDownload() : bool {
+    protected function forceDownload() : bool
+    {
         return $this->options['force'] == true;
     }
 
     /**
      * @return bool
      */
-    protected function forceOverwriteFile() : bool {
+    protected function forceOverwriteFile() : bool
+    {
         return $this->options['overwrite'] == true;
     }
 
@@ -63,7 +65,8 @@ abstract class AbstractDownloader implements DownloaderInterface
     /**
      * @return string
      */
-    protected function getVideoId() : string {
+    protected function getVideoId() : string
+    {
         return $this->options['video_id'];
     }
 
@@ -72,32 +75,31 @@ abstract class AbstractDownloader implements DownloaderInterface
      * @param callable|null $callback
      * @throws DownloadException
      */
-    public function download($destinationFile, callable $callback = null) : void {
-
-        if(file_exists($destinationFile) and !$this->forceOverwriteFile()){
+    public function download($destinationFile, callable $callback = null) : void
+    {
+        if (file_exists($destinationFile) and !$this->forceOverwriteFile()) {
             throw DownloadException::destinationFileAlreadyExists($destinationFile);
         }
 
-        if(!is_dir(dirname($destinationFile))){
-            if(!mkdir(dirname($destinationFile), 0777, true)){
+        if (!is_dir(dirname($destinationFile))) {
+            if (!mkdir(dirname($destinationFile), 0777, true)) {
                 throw DownloadException::cannotCreateDirectory(dirname($destinationFile));
             }
         }
 
         $this->tempFilePathName = $destinationFile . '.temp';
 
-        if(file_exists($this->tempFilePathName) and !$this->forceDownload()){
+        if (file_exists($this->tempFilePathName) and !$this->forceDownload()) {
             throw DownloadException::tempFileAlreadyExists($this->tempFilePathName);
         }
 
         DownloaderUtil::downloadURL($this->getURL(), $this->tempFilePathName, $callback);
         rename($this->tempFilePathName, $destinationFile);
-
     }
 
     public function __destruct()
     {
-        if(is_file($this->tempFilePathName)){
+        if (is_file($this->tempFilePathName)) {
             unlink($this->tempFilePathName);
         }
     }

@@ -7,16 +7,16 @@ use PHPUnit\Framework\TestCase;
 
 class DownloadExceptionTest extends TestCase
 {
-    public function testExceptionTempFileExists(){
-
+    public function testExceptionTempFileExists()
+    {
         $this->expectException(DownloadException::class);
         $this->expectExceptionMessage('Temp file "thefile.txt" already exists, use force to overwrite');
 
         throw DownloadException::tempFileAlreadyExists('thefile.txt');
     }
 
-    public function testExceptionAlreadyRegistered(){
-
+    public function testExceptionAlreadyRegistered()
+    {
         $this->expectException(DownloadException::class);
         $this->expectExceptionMessage('Downloader with name "MyDownloader" is already registered');
 
