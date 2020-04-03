@@ -33,4 +33,6 @@ $vd->registerDownloader('my_downloader', MyDownloader::class);
 $downloader = $vd->getDownloader('my_downloader', $myVideoIdOrReference, [
     //[...additional custom options...]
 ]);
+
+$downloader->download(__DIR__ . '/output.avi');
 ```
