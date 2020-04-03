@@ -41,14 +41,14 @@ abstract class AbstractDownloader implements DownloaderInterface
     /**
      * @return mixed
      */
-    protected function forceDownload(){
+    protected function forceDownload() : bool {
         return $this->options['force'] == true;
     }
 
     /**
      * @return bool
      */
-    protected function forceOverwriteFile(){
+    protected function forceOverwriteFile() : bool {
         return $this->options['overwrite'] == true;
     }
 

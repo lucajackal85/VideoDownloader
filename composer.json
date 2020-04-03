@@ -3,7 +3,6 @@
     "type": "library",
     "require": {
         "php": ">=7.1",
-        "athlon1600/youtube-downloader": "^2.0",
         "symfony/options-resolver": ">=3.4"
     },
     "extra": {
@@ -38,5 +37,6 @@
             "name": "Luca",
             "email": "luca.giacalone@edimotive.com"
         }
-    ]
+    ],
+    "description": ""
 }

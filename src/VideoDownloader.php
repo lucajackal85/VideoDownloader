@@ -3,18 +3,15 @@
 namespace Jackal\Downloader;
 
 use Jackal\Downloader\Downloader\DownloaderInterface;
+use Jackal\Downloader\Downloader\VimeoDownloader;
 use Jackal\Downloader\Downloader\YoutubeDownloader;
 use Jackal\Downloader\Exception\DownloadException;
 
 class VideoDownloader
 {
-    const TYPE_YOUTUBE = 'youtube';
+    protected $downloaders = [];
 
-    protected $downloaders = [
-        self::TYPE_YOUTUBE => YoutubeDownloader::class,
-    ];
-
-    public function registerDownloader($name, $downloaderClass){
+    public function registerDownloader($name, $downloaderClass) : void{
         if(is_object($downloaderClass)) {
             $downloaderClass = get_class($downloaderClass);
         }
@@ -25,7 +22,7 @@ class VideoDownloader
         $this->downloaders[$name] = $downloaderClass;
     }
 
-    public function getRegisteredDownloaders(){
+    public function getRegisteredDownloaders() : array {
         return $this->downloaders;
     }
 
@@ -36,7 +33,7 @@ class VideoDownloader
      * @return DownloaderInterface
      * @throws \Exception
      */
-    public function getDownloader($nameOrNamespace, $id, $config = []){
+    public function getDownloader($nameOrNamespace, $id, $config = []) : DownloaderInterface{
 
         if(!array_key_exists($nameOrNamespace, $this->downloaders)){
             throw new \Exception('Invalid video_type or namespace [' . $nameOrNamespace . ']');
