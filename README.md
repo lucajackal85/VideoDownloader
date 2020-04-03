@@ -1,12 +1,36 @@
-## Disclaimer: this library is in Alpha - not tester. Use it at your own risk!
-
 # Video Downloader
-Minimal example
+
+## This is the base project for actual downloader projects:
+- [jackal/video-downloader-ext-vimeo](https://github.com/lucajackal85/VideoDownloaderVimeoExtension)
+- [jackal/video-downloader-ext-youtube](https://github.com/lucajackal85/VideoDownloaderYoutubeExtension)
+
+## Installation
 ```
-$youtubeVideoId = 'otCpCn0l4Wo';
+    composer install jackal/video-downloader
+```
+### Write your own downloader:
+```
+class MyDownloader extends AbstractDownloader
+{
+    public function getURL(): string
+    {
+       $videoId = $this->getVideoId();
+       
+       //$videoLocation = [...code to retreive URL ...]
+
+       return $videoLocation;
+    }
+}
+```
+
+### Download it!
+```
+$myVideoIdOrReference = 'video-123456';
 
 $vd = new \Jackal\Downloader\VideoDownloader();
-$downloader = $vd->getDownloader(VideoDownloader::TYPE_YOUTUBE,$youtubeVideoId);
+$vd->registerDownloader('my_downloader', MyDownloader::class);
 
-$downloader->download('/path/to/output/file.avi');
+$downloader = $vd->getDownloader('my_downloader', $myVideoIdOrReference, [
+    //[...additional custom options...]
+]);
 ```
