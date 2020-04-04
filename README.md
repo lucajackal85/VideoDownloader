@@ -3,6 +3,7 @@
 [![Total Downloads](https://poser.pugx.org/jackal/video-downloader/downloads)](https://packagist.org/packages/jackal/video-downloader)
 [![Latest Unstable Version](https://poser.pugx.org/jackal/video-downloader/v/unstable)](https://packagist.org/packages/jackal/video-downloader)
 [![License](https://poser.pugx.org/jackal/video-downloader/license)](https://packagist.org/packages/jackal/video-downloader)
+[![Build Status](https://travis-ci.org/lucajackal85/VideoDownloader.svg?branch=master)](https://travis-ci.org/lucajackal85/VideoDownloader)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lucajackal85/VideoDownloader/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lucajackal85/VideoDownloader/?branch=master)
 
 ## This is the base project for actual downloader projects:
