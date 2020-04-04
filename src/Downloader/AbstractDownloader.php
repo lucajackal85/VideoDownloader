@@ -71,6 +71,37 @@ abstract class AbstractDownloader implements DownloaderInterface
     }
 
     /**
+     * @return array
+     */
+    protected function getFormats() : array
+    {
+        if(!isset($this->options['format'])){
+            return [];
+        }
+
+        if(is_scalar($this->options['format'])){
+            return [$this->options['format']];
+        }
+
+        return $this->options['format'];
+
+    }
+
+    protected function filterByFormats(array $possibleResults) : array{
+        if($this->getFormats() != []) {
+            foreach ($this->getFormats() as $selectedFormat) {
+                if (isset($possibleResults[$selectedFormat])) {
+                    return [$selectedFormat => $possibleResults[$selectedFormat]];
+                }
+            }
+
+            throw DownloadException::formatNotFound($this->getFormats(), $possibleResults);
+        }
+
+        return $possibleResults;
+    }
+
+    /**
      * @param string $destinationFile
      * @param callable|null $callback
      * @throws DownloadException

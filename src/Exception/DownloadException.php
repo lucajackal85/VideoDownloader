@@ -48,4 +48,19 @@ class DownloadException extends \Exception
     {
         return new DownloadException($message);
     }
+
+    /**
+     * @param array $selectedFormats
+     * @param array $available
+     * @return DownloadException
+     */
+    public static function formatNotFound(array $selectedFormats, array $available) : DownloadException
+    {
+        return new DownloadException(sprintf(
+            'Format%s %s is not available. [Available formats are: %s]',
+            count($selectedFormats) == 1 ? '' : 's',
+            implode(', ', $selectedFormats),
+            implode(', ', array_keys($available))
+        ));
+    }
 }
