@@ -1,4 +1,9 @@
-# Video Downloader
+# VideoDownloader
+[![Latest Stable Version](https://poser.pugx.org/jackal/video-downloader/v/stable)](https://packagist.org/packages/jackal/video-downloader)
+[![Total Downloads](https://poser.pugx.org/jackal/video-downloader/downloads)](https://packagist.org/packages/jackal/video-downloader)
+[![Latest Unstable Version](https://poser.pugx.org/jackal/video-downloader/v/unstable)](https://packagist.org/packages/jackal/video-downloader)
+[![License](https://poser.pugx.org/jackal/video-downloader/license)](https://packagist.org/packages/jackal/video-downloader)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/lucajackal85/VideoDownloader/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/lucajackal85/VideoDownloader/?branch=master)
 
 ## This is the base project for actual downloader projects:
 - [jackal/video-downloader-ext-vimeo](https://github.com/lucajackal85/VideoDownloaderVimeoExtension)
@@ -6,7 +11,7 @@
 
 ## Installation
 ```
-    composer install jackal/video-downloader
+    composer require jackal/video-downloader
 ```
 ### Write your own downloader:
 ```
