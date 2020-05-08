@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Jackal\Downloader\Parser;
 
 class URLRegexParser
@@ -17,7 +16,7 @@ class URLRegexParser
      * @return string|null
      */
     public function parse(string $publicWatchUrl) : ?string{
-        preg_match($this->downloaderClass::getPublicUrlRegex(),$publicWatchUrl,$matches);
+        preg_match($this->downloaderClass::getPublicUrlRegex(), $publicWatchUrl, $matches);
         if(isset($matches[1])){
             return $matches[1];
         }

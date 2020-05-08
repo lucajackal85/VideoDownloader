@@ -4,7 +4,6 @@ namespace Jackal\Downloader\Downloader;
 
 interface DownloaderInterface
 {
-
     public function __construct($id, array $config = []);
 
     public static function getPublicUrlRegex() : string;

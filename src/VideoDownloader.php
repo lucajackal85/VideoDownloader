@@ -14,7 +14,7 @@ class VideoDownloader
     protected $downloaders = [];
 
     /**
-     * @param string $downloaderClass
+     * @param string|object $downloaderClass
      * @throws DownloadException
      */
     public function registerDownloader($downloaderClass) : void
@@ -22,7 +22,7 @@ class VideoDownloader
         if (is_object($downloaderClass)) {
             $downloaderClass = get_class($downloaderClass);
         }
-        /** @var DownloaderInterface $downloaderClass */
+
         if (array_key_exists($downloaderClass::getType(), $this->downloaders)) {
             throw DownloadException::alreadyRegistered($downloaderClass::getType());
         }
@@ -39,7 +39,7 @@ class VideoDownloader
 
     /**
      * @param string $name
-     * @param $id
+     * @param mixed $id
      * @param array $config
      * @return DownloaderInterface
      * @throws DownloadException
@@ -54,16 +54,16 @@ class VideoDownloader
     }
 
     /**
-     * @param $publicUrl
+     * @param string $publicUrl
      * @param array $config
      * @return DownloaderInterface
      * @throws DownloadException
      */
-    public function getDownloaderByPublicUrl($publicUrl,$config = []) : DownloaderInterface{
+    public function getDownloaderByPublicUrl(string $publicUrl, $config = []) : DownloaderInterface{
         foreach ($this->getRegisteredDownloaders() as $downloaderClass){
             $regexParser = new URLRegexParser($downloaderClass);
             if($regexParser->isValidUrl($publicUrl)){
-                return new $downloaderClass($regexParser->parse($publicUrl),$config);
+                return new $downloaderClass($regexParser->parse($publicUrl), $config);
             }
         }
 
