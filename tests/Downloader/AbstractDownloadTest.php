@@ -14,6 +14,16 @@ abstract class AbstractDownloadTest extends AbstractFileDownloaderTest
             {
                 return __DIR__ . '/../Sample/sample_1.txt';
             }
+
+            public static function getType(): string
+            {
+                return 'local_test';
+            }
+
+            public static function getPublicUrlRegex(): string
+            {
+                return '/local_(.*)/';
+            }
         };
     }
 }

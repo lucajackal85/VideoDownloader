@@ -5,6 +5,18 @@ namespace Jackal\Downloader\Exception;
 class DownloadException extends \Exception
 {
     /**
+     * @param $name
+     * @return DownloadException
+     */
+    public static function invalidName($name){
+        return new DownloadException(sprintf('Downloader type "%s" not found',$name));
+    }
+
+    public static function invalidPublicUrl($publicUrl){
+        return new DownloadException('Downloader not found [trying to parse: ' . $publicUrl . ']');
+    }
+
+    /**
      * @param string $tempFile
      * @return DownloadException
      */
