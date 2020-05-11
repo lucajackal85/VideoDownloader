@@ -4,6 +4,7 @@ namespace Jackal\Downloader;
 
 use Jackal\Downloader\Downloader\DownloaderInterface;
 use Jackal\Downloader\Exception\DownloadException;
+use Jackal\Downloader\Parser\URLRegexParser;
 
 class VideoDownloader
 {
@@ -13,20 +14,19 @@ class VideoDownloader
     protected $downloaders = [];
 
     /**
-     * @param string $name
      * @param string|object $downloaderClass
      * @throws DownloadException
      */
-    public function registerDownloader(string $name, $downloaderClass) : void
+    public function registerDownloader($downloaderClass) : void
     {
         if (is_object($downloaderClass)) {
             $downloaderClass = get_class($downloaderClass);
         }
 
-        if (array_key_exists($name, $this->downloaders)) {
-            throw DownloadException::alreadyRegistered($name);
+        if (array_key_exists($downloaderClass::getType(), $this->downloaders)) {
+            throw DownloadException::alreadyRegistered($downloaderClass::getType());
         }
-        $this->downloaders[$name] = $downloaderClass;
+        $this->downloaders[$downloaderClass::getType()] = $downloaderClass;
     }
 
     /**
@@ -38,18 +38,35 @@ class VideoDownloader
     }
 
     /**
-     * @param string $nameOrNamespace
-     * @param string $id
-     * @param string[] $config
+     * @param string $name
+     * @param mixed $id
+     * @param array $config
      * @return DownloaderInterface
      * @throws DownloadException
      */
-    public function getDownloader(string $nameOrNamespace, $id, array $config = []) : DownloaderInterface
+    public function getDownloader(string $name, $id, array $config = []) : DownloaderInterface
     {
-        if (!array_key_exists($nameOrNamespace, $this->downloaders)) {
-            throw new DownloadException('Invalid video_type or namespace [' . $nameOrNamespace . ']');
+        if (!array_key_exists($name, $this->downloaders)) {
+            throw DownloadException::invalidName($name);
         }
 
-        return new $this->downloaders[$nameOrNamespace]($id, $config);
+        return new $this->downloaders[$name]($id, $config);
+    }
+
+    /**
+     * @param string $publicUrl
+     * @param array $config
+     * @return DownloaderInterface
+     * @throws DownloadException
+     */
+    public function getDownloaderByPublicUrl(string $publicUrl, $config = []) : DownloaderInterface{
+        foreach ($this->getRegisteredDownloaders() as $downloaderClass){
+            $regexParser = new URLRegexParser($downloaderClass);
+            if($regexParser->isValidUrl($publicUrl)){
+                return new $downloaderClass($regexParser->parse($publicUrl), $config);
+            }
+        }
+
+        throw DownloadException::invalidPublicUrl($publicUrl);
     }
 }

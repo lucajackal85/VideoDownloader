@@ -2,12 +2,8 @@
 
 namespace Jackal\Downloader\Tests\Downloader;
 
-use Jackal\Downloader\Downloader\AbstractDownloaderWithFormats;
-use PHPUnit\Framework\TestCase;
-
 class DownloaderWithFormatsTest extends AbstractDownloadTest
 {
-
     public function testGetFormatsDefault(){
 
         $downloader = $this->getTestLocalDownloader('id', []);

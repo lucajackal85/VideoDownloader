@@ -3,7 +3,6 @@
 namespace Jackal\Downloader\Tests\Downloader;
 
 use Jackal\Downloader\Exception\DownloadException;
-use PHPUnit\Framework\TestCase;
 
 class DownloaderWithFormatsFilterTest extends AbstractDownloadTest
 {
