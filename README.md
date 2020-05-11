@@ -12,7 +12,7 @@
 
 ## Installation
 ```
-    composer require jackal/video-downloader
+    composer require jackal/video-downloader:^0.5
 ```
 ### Write your own downloader:
 ```
@@ -26,17 +26,41 @@ class MyDownloader extends AbstractDownloader
 
        return $videoLocation;
     }
+    
+    //it needs to identify video ID from public URLS (this example: http://www.sample-site.com/video/1234/)
+    public static function getPublicUrlRegex(): string
+    {
+        return '/www\.sample-site\.com\/video\/([\d]+)\//';
+    }
+
+    public static function getType(): string
+    {
+        return 'my_downloader';
+    }
 }
 ```
 
 ### Download it!
 ```
-$myVideoIdOrReference = 'video-123456';
+$myVideoIdOrReference = '123456';
 
 $vd = new \Jackal\Downloader\VideoDownloader();
-$vd->registerDownloader('my_downloader', MyDownloader::class);
+$vd->registerDownloader(MyDownloader::class);
 
 $downloader = $vd->getDownloader('my_downloader', $myVideoIdOrReference, [
+    //[...additional custom options...]
+]);
+
+$downloader->download(__DIR__ . '/output.avi');
+```
+### Download from URL
+```
+$myVideoIdOrReference = '123456';
+
+$vd = new \Jackal\Downloader\VideoDownloader();
+$vd->registerDownloader(MyDownloader::class);
+
+$downloader = $vd->getDownloaderByPublicUrl('http://www.sample-site.com/video/1234/', [
     //[...additional custom options...]
 ]);
 
