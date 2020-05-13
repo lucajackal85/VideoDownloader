@@ -18,6 +18,15 @@ class VideoDownloaderTest extends AbstractDownloadTest
         $this->assertEquals([
             'local_test' => get_class($local),
         ], $downloader->getRegisteredDownloaders());
+        $this->assertEquals('123456',$local->getVideoId());
+        $this->assertEquals([],$local->getFormatsAvailable());
+    }
+
+    public function testSetFormat(){
+        $local = $this->getTestLocalDownloader('123456', []);
+        $this->assertEquals([],$local->getOptions()['format']);
+        $local->setFormat('test');
+        $this->assertEquals('test',$local->getOptions()['format']);
     }
 
     public function testGetDownloader(){

@@ -12,6 +12,7 @@ class DownloadOptionTest extends AbstractDownloadTest
             'video_id' => 123,
             'overwrite' => false,
             'force' => false,
+            'format' => [],
         ], $this->getTestLocalDownloader(123, [])->getOptions());
     }
 
@@ -22,6 +23,7 @@ class DownloadOptionTest extends AbstractDownloadTest
             'overwrite' => false,
             'force' => false,
             'custom_option' => 'this is the custom option',
+            'format' => [],
         ], $this->getTestLocalDownloader(123, ['custom_option' => 'this is the custom option'])->getOptions());
     }
 

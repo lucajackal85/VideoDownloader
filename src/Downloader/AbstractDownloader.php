@@ -30,6 +30,7 @@ abstract class AbstractDownloader implements DownloaderInterface
             'force' => false,
             'video_id' => $id,
             'overwrite' => false,
+            'format' => []
         ]));
 
         $options->setAllowedTypes('force', 'bool');
@@ -65,7 +66,7 @@ abstract class AbstractDownloader implements DownloaderInterface
     /**
      * @return string
      */
-    protected function getVideoId() : string
+    public function getVideoId() : string
     {
         return $this->options['video_id'];
     }
@@ -85,6 +86,16 @@ abstract class AbstractDownloader implements DownloaderInterface
 
         return $this->options['format'];
 
+    }
+
+    /**
+     * @param string|array $format
+     * @return DownloaderInterface
+     */
+    public function setFormat($format): DownloaderInterface
+    {
+        $this->options['format'] = $format;
+        return $this;
     }
 
     protected function filterByFormats(array $possibleResults) : array{

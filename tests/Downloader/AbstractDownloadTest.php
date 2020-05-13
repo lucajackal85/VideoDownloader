@@ -24,6 +24,11 @@ abstract class AbstractDownloadTest extends AbstractFileDownloaderTest
             {
                 return '/local_(.*)/';
             }
+
+            public function getFormatsAvailable(): array
+            {
+                return [];
+            }
         };
     }
 }
